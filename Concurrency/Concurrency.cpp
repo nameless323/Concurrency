@@ -11,6 +11,7 @@ void Hello()
 
 int main()
 {
+    unsigned int hc = std::thread::hardware_concurrency();
     std::thread t(Hello);
     t.join();
     return 0;
