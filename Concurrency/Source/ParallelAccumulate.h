@@ -42,3 +42,4 @@ T ParallelAccumulate(Iterator begin, Iterator end, T init)
     std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
     return std::acaccumulate(results.begin(), results.end(), init);
+}
