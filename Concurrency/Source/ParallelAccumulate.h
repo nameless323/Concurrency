@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <numeric>
 #include <thread>
 
@@ -28,7 +29,7 @@ T ParallelAccumulate(Iterator begin, Iterator end, T init)
     const size_t blockSize = len / numThreads;
 
     std::vector<T> results(numThreads);
-    std::vector<thread> threads(numThreads - 1);
+    std::vector<std::thread> threads(numThreads - 1);
 
     Iterator blockStart = begin;
     for (size_t i = 0; i < numThreads - 1; ++i)
@@ -38,8 +39,8 @@ T ParallelAccumulate(Iterator begin, Iterator end, T init)
         threads[i] = std::thread(AccumulateBlock<Iterator, T>(), blockStart, blockEnd, std::ref(results[i]));
         blockStart = blockEnd;
     }
-    AccumulateBlock(blockStart, end, results[numThreads - 1]);
+    AccumulateBlock<Iterator, T>()(blockStart, end, results[numThreads - 1]);
     std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
-    return std::acaccumulate(results.begin(), results.end(), init);
+    return std::accumulate(results.begin(), results.end(), init);
 }
