@@ -30,6 +30,9 @@
     <ClInclude Include="Source\ParallelAccumulate.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ThreadSafeStack.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
