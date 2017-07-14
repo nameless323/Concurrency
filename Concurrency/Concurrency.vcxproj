@@ -142,6 +142,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\HierarchicalMutex.h" />
     <ClInclude Include="Source\ParallelAccumulate.h" />
     <ClInclude Include="Source\ScopedThread.h" />
     <ClInclude Include="Source\ThreadSafeStack.h" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Concurrency.cpp" />
+    <ClCompile Include="Source\HierarchicalMutex.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

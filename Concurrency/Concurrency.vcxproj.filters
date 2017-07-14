@@ -33,12 +33,18 @@
     <ClInclude Include="Source\ThreadSafeStack.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\HierarchicalMutex.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Concurrency.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HierarchicalMutex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
