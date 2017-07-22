@@ -144,7 +144,9 @@
   <ItemGroup>
     <ClInclude Include="Source\HierarchicalMutex.h" />
     <ClInclude Include="Source\ParallelAccumulate.h" />
+    <ClInclude Include="Source\ParallelQuicksort.h" />
     <ClInclude Include="Source\ScopedThread.h" />
+    <ClInclude Include="Source\SpawnTask.h" />
     <ClInclude Include="Source\ThreadSafeQueue.h" />
     <ClInclude Include="Source\ThreadSafeStack.h" />
     <ClInclude Include="stdafx.h" />
