@@ -3,8 +3,8 @@
 #include <future>
 #include <thread>
 
-template<typename T, typename A>
-std::future<std::result_of<F(A&&)>::type> SpawnTask(F&& f, A&& a)
+template<typename F, typename A>
+std::future<typename std::result_of<F(A&&)>::type> SpawnTask(F&& f, A&& a)
 {
     using resultType = std::result_of<F(A&&)>::type;
     std::packaged_task<resultType(A&&)> task(std::move(f));

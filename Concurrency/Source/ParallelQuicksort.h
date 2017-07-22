@@ -18,7 +18,7 @@ std::list<T> ParallelQuicksort(std::list<T> input)
     std::list<T> lowerPart;
     lowerPart.splice(lowerPart.end(), input, input.begin(), dividePointIt);
 
-    std::future<std::list<T>> newLower(std::async(&ParallelQuicksort(std::move(lowerPart))));
+    std::future<std::list<T>> newLower(std::async(&ParallelQuicksort<T>, std::move(lowerPart)));
     auto newHigher(ParallelQuicksort(std::move(input)));
     result.splice(result.end(), newHigher);
     result.splice(result.begin(), newLower.get());
