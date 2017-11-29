@@ -6,7 +6,7 @@ template <typename T>
 class QueueDec
 {
 public:
-    QueueDec() : m_head(new Node), m_head(m_head->get())
+    QueueDec() : m_head(new Node), m_tail(m_head->get())
     {}
 
     QueueDec(const QueueDec&) = delete;
