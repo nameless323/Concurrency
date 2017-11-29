@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <mutex>
 
 template <typename T>
 class QueueDec
@@ -12,23 +13,21 @@ public:
     QueueDec(const QueueDec&) = delete;
     QueueDec& operator=(const QueueDec&) = delete;
 
+
     std::shared_ptr<T> TryPop()
     {
-        if (m_head->get() == m_tail)
-            return std::shared_ptr<T>();
-
-        std::shared_ptr<T> const res(m_head->data);
-        std::unique_ptr<Node> const oldHead = std::move(m_head);
-        m_head = std::move(oldHead->next);
-        return res;
+        std::unique_ptr<Node> oldHead = PopHead();
+        return oldHead == nullptr ? shared_ptr<T>() : oldHead;
     }
 
     void Push(T newValue)
     {
         std::shared_ptr<T> newData(std::make_shared<T>(std::move(newValue)));
         std::unique_ptr<Node> p(new Node());
-        m_tail->data = newData;
         Node* const newTail = p->get();
+        std::lock_guard<std::mutex> l(m_tailMutex);
+        m_tail->data = newData;
+        m_tail->next = std::move(p);
         m_tail = newTail;
     }
 
@@ -39,6 +38,25 @@ private:
         std::unique_ptr<Node> next;
     };
 
+    Node* GetTail()
+    {
+        std::lock_guard<std::mutex> l(m_tailMutex);
+        return m_tail;
+    }
+
+    std::unique_ptr<Node> PopHead()
+    {
+        std::lock_guard<std::mutex> l(m_headMutex);
+        if (m_head->get() == GetTail())
+            return nullptr;
+        std::unique_ptr<Node> oldHead = std::move(m_head);
+        m_head = std::move(oldHead->next);
+        return oldHead;
+    }
+
     std::unique_ptr<Node> m_head;
     Node* m_tail = nullptr;
+
+    std::mutex m_headMutex;
+    std::mutex m_tailMutex;
 };
