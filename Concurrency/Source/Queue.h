@@ -17,7 +17,7 @@ public:
 
         std::shared_ptr<T> const res(std::make_shared<T>(std::move(m_head->data)));
         std::unique_ptr<Node> const oldHead = std::move(m_head);
-        m_head = std::move(oldHead);
+        m_head = std::move(oldHead->next);
         return res;
     }
 
