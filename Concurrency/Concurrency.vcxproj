@@ -149,6 +149,7 @@
     <ClInclude Include="Source\QueueDec.h" />
     <ClInclude Include="Source\ScopedThread.h" />
     <ClInclude Include="Source\SpawnTask.h" />
+    <ClInclude Include="Source\ThreadsafeList.h" />
     <ClInclude Include="Source\ThreadSafeLookupTable.h" />
     <ClInclude Include="Source\ThreadSafeQueue.h" />
     <ClInclude Include="Source\ThreadSafeQueueOnPtr.h" />

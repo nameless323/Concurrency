@@ -10,6 +10,7 @@
 #include "Source/ThreadSafeQueue.h"
 #include "Source/ParallelQuicksort.h"
 #include "Source/SpawnTask.h"
+#include <shared_mutex>
 
 void Hello()
 {
