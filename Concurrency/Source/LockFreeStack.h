@@ -20,9 +20,16 @@ public:
 
     std::shared_ptr<T> Pop()
     {
+        ++m_threadsInPop;
         Node* oldHead = m_head.load();
         while (oldHead && !m_head.compare_exchange_weak(oldHead, oldHead->Next));
-        return oldHead ? oldHead->Data : std::shared_ptr<T>();
+        std::shared_ptr<T> res;
+        if (oldHead)
+        {
+            res.swap(oldHead->Data);
+        }
+        TryReclaim(oldHead);
+        return res;
     }
 
 private:
@@ -37,4 +44,61 @@ private:
     };
 
     std::atomic<Node> m_head;
+    std::atomic<unsigned> m_threadsInPop;
+    std::atomic<Node*> m_toBeDeleted;
+
+    static void DeleteNodes(Node* nodes)
+    {
+        while (nodes)
+        {
+            Node* next = nodes->Next;
+            delete nodes;
+            nodes = next;
+        }
+    }
+
+    void TryReclaim(Node* oldHead)
+    {
+        if (m_threadsInPop == 1)
+        {
+            Node* nodesToDelete = m_toBeDeleted.exchange(nullptr);
+            if (!--m_threadsInPop)
+            {
+                DeleteNodes(nodesToDelete);
+            }
+            else if (nodesToDelete)
+            {
+                ChainPendingNodes(nodesToDelete);
+            }
+            delete oldHead;
+        }
+        else
+        {
+            ChainPendingNode(oldHead);
+            --m_threadsInPop;
+        }
+    }
+
+    void ChainPendingNodes(Node* nodes)
+    {
+        Node* last = nodes;
+        while (Node* const next = last->Next)
+        {
+            last = next;
+        }
+        ChainPendingNodes(nodes, last);
+    }
+
+    void ChainPendingNodes(Node* first, Node* last)
+    {
+        last->Next = m_toBeDeleted;
+        while (!m_toBeDeleted.compare_exchange_weak(last->Next, first))
+        {
+        };
+    }
+
+    void ChainPendingNode(Node* n)
+    {
+        ChainPendingNodes(n, n);
+    }
 };
