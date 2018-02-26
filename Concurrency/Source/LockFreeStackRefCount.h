@@ -27,7 +27,33 @@ public:
         }
     }
 
+    std::shared_ptr<T> Pop()
+    {
+        CountedNodePtr oldHead = m_head.load();
+        for (;;)
+        {
+            IncreaseHeadCount(oldHead);
+            Node* const ptr = oldHead.ptr;
+            if (ptr == nullptr)
+                return std::shared_ptr<T>();
 
+            if (m_head.compare_exchange_strong(oldHead, ptr->Next))
+            {
+                std::shared_ptr<T> res;
+                res.swap(ptr->Data);
+                const int countIncrease = oldHead.ExternalCount - 2;
+                if (ptr->InternalCount.fetch_add(countIncrease) == -countIncrease)
+                {
+                    delete ptr;
+                }
+                return res;
+            }
+            else if (ptr->InternalCount.fetch_sub(1) == 1)
+            {
+                delete ptr;
+            }
+        }
+    }
 
 private:
     struct Node;
