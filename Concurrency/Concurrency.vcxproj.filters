@@ -66,6 +66,12 @@
     <ClInclude Include="Source\LockFreeStackHP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\LockFreeStackRefCount.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\QSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

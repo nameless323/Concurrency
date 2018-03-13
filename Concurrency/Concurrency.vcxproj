@@ -148,6 +148,7 @@
     <ClInclude Include="Source\LockFreeStackRefCount.h" />
     <ClInclude Include="Source\ParallelAccumulate.h" />
     <ClInclude Include="Source\ParallelQuicksort.h" />
+    <ClInclude Include="Source\QSort.h" />
     <ClInclude Include="Source\Queue.h" />
     <ClInclude Include="Source\QueueDec.h" />
     <ClInclude Include="Source\ScopedThread.h" />
